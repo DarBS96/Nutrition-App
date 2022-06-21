@@ -1,12 +1,11 @@
-console.log("hi");
+const form = document.querySelector(".login-form");
 
 const login = async () => {
-  console.log(document.getElementById("username"));
+  //view
+  const p = document.querySelector(".message");
   try {
     const username = document.getElementById("username").value;
-    console.log(username);
     const password = document.getElementById("password").value;
-    console.log(password);
     const URL = "/users/login";
     const options = {
       method: "POST",
@@ -17,10 +16,20 @@ const login = async () => {
     };
 
     const res = await fetch(URL, options);
-    console.log(res);
-    const data = await res.json();
-    console.log(data);
+    console.log(res.status);
+    if (res.status === 406) {
+      p.textContent = "Sorry you have to register first";
+    } else if (res.status === 403) {
+      p.textContent = "Sorry incorrect password";
+    } else {
+      location.href = "/users/register";
+    }
   } catch (err) {
     console.log(err.message);
   }
 };
+
+form.addEventListener("submit", (e) => {
+  e.preventDefault();
+  login();
+});
