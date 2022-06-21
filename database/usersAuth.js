@@ -10,33 +10,6 @@ const db = knex({
   },
 });
 
-// db.select()
-//   .table("users")
-//   .then((result) => {
-//     console.log(result);
-//   })
-//   .catch((err) => {
-//     console.log(err);
-//   });
-
-// db("users")
-//   .insert([
-//     {
-//       first_name: "Dar",
-//       last_name: "Ben Shitrit",
-//       email: "dsa@gmail.com",
-//       username: "OrHachamod",
-//       password: "123456",
-//     },
-//   ])
-//   .returning("*")
-//   .then((result) => {
-//     console.log(result);
-//   })
-//   .catch((err) => {
-//     console.log(err);
-//   });
-
 const checkIfExist = (keyValueObj, table) => {
   const isExist = db(table)
     .select("*")
@@ -52,7 +25,17 @@ const pushDataToDatabase = (keyValueObj, table) => {
     .then((res) => console.log(res));
 };
 
-module.exports = {
-  checkIfExist,
-  pushDataToDatabase,
+const verifyUserPassword = (keyValueObj) => {
+  const { username, password } = keyValueObj;
+  console.log(password);
+  const verifyPassword = db("users")
+    .select("password")
+    .where({ username })
+    .then((res) => {
+      console.log(res);
+      return res[0].password === password ? true : false;
+    });
+  return verifyPassword;
 };
+module.exports = { checkIfExist, verifyUserPassword ,pushDataToDatabase};
+
