@@ -5,7 +5,7 @@ const db = knex({
     host: "127.0.0.1",
     port: "5432",
     user: "postgres",
-    password: "Or2022",
+    password: "Amit9496",
     database: "nutritionApp",
   },
 });
@@ -37,5 +37,4 @@ const verifyUserPassword = (keyValueObj) => {
     });
   return verifyPassword;
 };
-module.exports = { checkIfExist, verifyUserPassword ,pushDataToDatabase};
-
+module.exports = { checkIfExist, verifyUserPassword, pushDataToDatabase };
