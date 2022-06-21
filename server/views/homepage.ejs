@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous" />
+    <link rel="stylesheet" href="/login/login.css" />
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous" defer></script>
+</head>
+
+<body>
+    <div class="container d-flex flex-column align-items-center justify-content-center">
+        <h1 class="display-4 text-center mt-3">
+            Get nutrition data of each food
+        </h1>
+        <form action="/homepage" method="post" class="login-form d-grid container" style="width: 350px">
+            <div class="mb-3">
+                <label for="searchFood " class="form-label">Write any food</label>
+                <input type="text " name="searchFood" class="form-control" id="searchFood " placeholder="Apple " />
+            </div>
+            <div class="mb-3">
+                <label for="grams " class="form-label">Amount in grams</label>
+                <input type="number " name="grams" class="form-control" id="grams " placeholder="100 grams " />
+            </div>
+            <button class="btn btn-success d-block m-auto">Calculate</button>
+        </form>
+        <br />
+        <section>
+            <div class="card" style="width: 18rem">
+                <img src="..." class="card-img-top" alt="..." />
+                <div class="card-body">
+                    <h5 class="card-title">
+                        <%=data?.food_name %>
+                    </h5>
+                    <p class="card-text">
+                        Some quick example text to build on the card title and make up the bulk of the card's content.
+                    </p>
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">An item</li>
+                    <li class="list-group-item">A second item</li>
+                    <li class="list-group-item">A third item</li>
+                </ul>
+                <div class="card-body">
+                    <a href="#" class="card-link">Card link</a>
+                    <a href="#" class="card-link">Another link</a>
+                </div>
+            </div>
+        </section>
+    </div>
+</body>
+
+</html>

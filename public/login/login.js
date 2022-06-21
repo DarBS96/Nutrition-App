@@ -24,7 +24,7 @@ const login = async () => {
       p.classList.add("text-danger");
       p.textContent = "Sorry incorrect password";
     } else {
-      location.href = "/users/register";
+      location.href = "/homepage";
     }
   } catch (err) {
     console.log(err.message);
