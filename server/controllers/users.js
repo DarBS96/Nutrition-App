@@ -1,7 +1,12 @@
+const { read } = require("fs");
 const path = require("path");
 const {
   checkIfExist,
+
   pushDataToDatabase,
+
+  verifyUserPassword,
+
 } = require("../../database/usersAuth");
 
 const PostRegister = async (req, res) => {
@@ -40,9 +45,23 @@ const GetRegister = (req, res) => {
   );
 };
 
-const postLogin = (req, res) => {
-  const { username, password } = req.body;
-  res.json({ username, password });
+
+
+const postLogin = async (req, res) => {
+  try {
+    const { username, password } = req.body;
+    const isExist = await checkIfExist({ username }, "users");
+    if (isExist) {
+      const verifyPassword = await verifyUserPassword(req.body);
+      console.log(verifyPassword);
+      verifyPassword ? res.status(200) : res.status(403);
+    } else {
+      res.status(406);
+    }
+    res.json({ username, password });
+  } catch (err) {
+    console.log(err);
+  }
 };
 
 const getLogin = (req, res) => {
