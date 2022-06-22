@@ -24,9 +24,10 @@
     <div class="container">
       <%- include("./partials/navbar.ejs"); %>
       <section>
-        <h1 class="display-5 text-center mt-3">RMR Calculator</h1>
+        <h1 class="display-5 text-center mt-3">Your Data</h1>
+        <% if(form) { %>
         <p class="lead text-center">
-          Please fill in your information to get data
+          Please fill in your information to get personal data
         </p>
         <form
           action="/rmr"
@@ -95,10 +96,23 @@
           </div>
           <button class="btn btn-success col-lg-8 mt-3">SUBMIT</button>
         </form>
-        <% if(typeof rmr !== "undefined") {%>
+        <% } %> <% if(typeof rmr !== "undefined") {%>
 
-        <p class="display-5 text-center mt-4">
-          Your RMR is: <span class="fw-bold"> <%= rmr %></span>
+        <p class="display-5 text-center mt-5">
+          Your RMR is:
+          <span class="fw-bold">
+            <mark class="rounded"
+              ><%= rmr %> <span class="fs-6">kcal / day</span></mark
+            ></span
+          >
+        </p>
+        <p class="display-5 text-center mt-4 mt-lg-5">
+          Your BMI is:
+          <span class="fw-bold">
+            <mark class="rounded"
+              ><%= bmi %> <span class="fs-6">kg/m2</span></mark
+            ></span
+          >
         </p>
         <% } %> <% if(typeof img !== "undefined") { %>
         <img src="<%= img %>" alt="" />

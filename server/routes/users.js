@@ -6,6 +6,7 @@ const {
   getLogin,
   PostRegister,
   GetRegister,
+  getLogout,
 } = require("../controllers/users");
 
 router.post("/register", PostRegister);
