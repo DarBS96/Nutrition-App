@@ -61,32 +61,36 @@
       </form>
       <br />
       <section>
-        <% if (data) { %>
-        <div class="card m-auto mb-2" style="width: 18rem">
-          <img
-            src="<%=data.photo.thumb %>"
-            style="height: 160px"
-            class="card-img-top"
-            alt="..."
-          />
-          <div class="card-body">
-            <h5 class="card-title"><%=data?.food_name %></h5>
-            <p class="card-text">Information</p>
+        <div class="cards-container d-flex flex-wrap">
+          <% searches.forEach(data => { %>
+          <div class="card m-auto mb-2" style="width: 18rem">
+            <img
+              src="<%=data.photo.thumb %>"
+              style="height: 160px"
+              class="card-img-top"
+              alt="..."
+            />
+            <div class="card-body">
+              <h5 class="card-title"><%=data?.food_name %></h5>
+              <p class="card-text">Information</p>
+            </div>
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item">
+                grams: <%=data.serving_weight_grams %>
+              </li>
+              <li class="list-group-item">
+                Calories: <%=data.nf_calories%> grams
+              </li>
+              <li class="list-group-item">
+                sugars: <%=data.nf_total_carbohydrate%> grams
+              </li>
+              <li class="list-group-item">
+                protein: <%=data.nf_protein%> grams
+              </li>
+            </ul>
           </div>
-          <ul class="list-group list-group-flush">
-            <li class="list-group-item">
-              grams: <%=data.serving_weight_grams %>
-            </li>
-            <li class="list-group-item">
-              Calories: <%=data.nf_calories%> grams
-            </li>
-            <li class="list-group-item">
-              sugars: <%=data.nf_total_carbohydrate%> grams
-            </li>
-            <li class="list-group-item">protein: <%=data.nf_protein%> grams</li>
-          </ul>
+          <% }) %>
         </div>
-        <% } %>
       </section>
       <div style="cursor: pointer" class="saveIcon">
         <i class="fa-solid fa-heart icon text-center m-auto d-block"></i>

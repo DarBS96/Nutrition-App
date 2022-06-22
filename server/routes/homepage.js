@@ -4,6 +4,7 @@ const {
   getHomePage,
   getFoodData,
   pushToDataBase,
+  postSendToDataBase,
 } = require("../controllers/foodData");
 
 routerHomePage.get("/", getHomePage);
@@ -12,8 +13,6 @@ routerHomePage.get("/data", (req, res) => {
   pushToDataBase();
   res.redirect("/homepage");
 });
-routerHomePage.post("/data", (req, res) => {
-  console.log(req.body);
-});
+routerHomePage.post("/data", postSendToDataBase);
 
 module.exports = routerHomePage;
