@@ -3,11 +3,14 @@ const routerHomePage = express.Router();
 const {
   getHomePage,
   getFoodData,
-  //   createImage,
+  pushToDataBase,
 } = require("../controllers/foodData");
 
 routerHomePage.get("/", getHomePage);
-// routerHomePage.get("/chart", createImage);
 routerHomePage.post("/", getFoodData);
+routerHomePage.get("/data", (req, res) => {
+  pushToDataBase();
+  res.redirect("/homepage");
+});
 
 module.exports = routerHomePage;
