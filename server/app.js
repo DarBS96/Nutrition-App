@@ -4,6 +4,7 @@ const path = require("path");
 
 const router = require("./routes/users.js");
 const routerHomePage = require("./routes/homepage.js");
+const routerRmr = require("../server/routes/rmr.js");
 
 app.use("/", express.static(__dirname + "/../public"));
 app.use(express.urlencoded({ extended: false }));
@@ -13,5 +14,6 @@ app.set("views", path.join(__dirname, "/views"));
 
 app.use("/users", router);
 app.use("/homepage", routerHomePage);
+app.use("/rmr", routerRmr);
 
 app.listen(3000, () => console.log("server running on port 3000"));
