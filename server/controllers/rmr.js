@@ -7,11 +7,13 @@ const {
 const { getConnectedUser, getUserId } = require("./users");
 
 const getRmr = async (req, res) => {
+  console.log(await checkIfExist({ user_id: getUserId() }, "userInfo"));
   if (!getConnectedUser()) {
     res.redirect("/users/login");
     return;
   }
   if (!(await checkIfExist({ user_id: getUserId() }, "userInfo"))) {
+    console.log("FORM TRUE");
     res.render("../views/rmr.ejs", { form: true });
     return;
   }
