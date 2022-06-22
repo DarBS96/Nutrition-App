@@ -12,5 +12,8 @@ routerHomePage.get("/data", (req, res) => {
   pushToDataBase();
   res.redirect("/homepage");
 });
+routerHomePage.post("/data", (req, res) => {
+  console.log(req.body);
+});
 
 module.exports = routerHomePage;

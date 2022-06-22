@@ -9,6 +9,8 @@ const {
 } = require("../../database/usersAuth");
 let dataFromUser;
 
+const searches = [];
+
 const getHomePage = (req, res) => {
   if (!getConnectedUser()) {
     res.status(405);
@@ -33,7 +35,8 @@ const getFoodData = async (req, res) => {
       "x-remote-user-id": "0",
     },
   });
-  dataFromUser = data;
+
+  searches.push(data.foods[0]);
 
   //Render to user
   res.render("../views/homepage.ejs", {
@@ -72,8 +75,8 @@ const pushToDataBase = (dataFromUser) => {
 };
 
 //Display all food from DB
-let displayFoodToUser = displayAllFood()
-  .then((res) => console.log(res))
-  .catch((err) => console.log(err));
+// let displayFoodToUser = displayAllFood()
+//   .then((res) => console.log(res))
+//   .catch((err) => console.log(err));
 
 module.exports = { getHomePage, getFoodData, pushToDataBase };
