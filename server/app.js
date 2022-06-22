@@ -1,6 +1,7 @@
 const express = require("express");
 const app = express();
 const path = require("path");
+const { getLogout } = require("../server/controllers/users");
 
 const router = require("./routes/users.js");
 const routerHomePage = require("./routes/homepage.js");
@@ -15,5 +16,6 @@ app.set("views", path.join(__dirname, "/views"));
 app.use("/users", router);
 app.use("/homepage", routerHomePage);
 app.use("/rmr", routerRmr);
+app.get("/logout", getLogout);
 
 app.listen(3000, () => console.log("server running on port 3000"));

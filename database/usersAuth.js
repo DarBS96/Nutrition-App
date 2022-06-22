@@ -11,11 +11,15 @@ const db = knex({
 });
 
 const checkIfExist = (keyValueObj, table) => {
-  const isExist = db(table)
-    .select("*")
-    .where(keyValueObj)
-    .then((res) => !!res.length);
-  return isExist;
+  try {
+    const isExist = db(table)
+      .select("*")
+      .where(keyValueObj)
+      .then((res) => !!res.length);
+    return isExist;
+  } catch (err) {
+    console.log(err);
+  }
 };
 
 const pushDataToDatabase = (keyValueObj, table) => {
@@ -27,12 +31,10 @@ const pushDataToDatabase = (keyValueObj, table) => {
 
 const verifyUserPassword = (keyValueObj) => {
   const { username, password } = keyValueObj;
-  console.log(password);
   const verifyPassword = db("users")
     .select("password")
     .where({ username })
     .then((res) => {
-      console.log(res);
       return res[0].password === password ? true : false;
     });
   return verifyPassword;

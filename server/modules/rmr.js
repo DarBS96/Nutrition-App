@@ -60,4 +60,8 @@ const getChart = async () => {
   return dataUrl;
 };
 
-module.exports = { calculateRmr, getChart };
+const getBMI = ({ height, weight }) => {
+  return (weight / Math.pow(height / 100, 2)).toFixed(0);
+};
+
+module.exports = { calculateRmr, getChart, getBMI };
