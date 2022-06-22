@@ -17,7 +17,7 @@ const getHomePage = (req, res) => {
     res.redirect("/users/login");
     return;
   }
-  res.render("../views/homepage.ejs", { data: null });
+  res.render("../views/homepage.ejs", { data: null, searches });
 };
 
 const getFoodData = async (req, res) => {
@@ -40,7 +40,8 @@ const getFoodData = async (req, res) => {
 
   //Render to user
   res.render("../views/homepage.ejs", {
-    data: data.foods[0],
+    // data: data.foods[0],
+    searches,
   });
 };
 
@@ -74,9 +75,16 @@ const pushToDataBase = (dataFromUser) => {
   }
 };
 
+const postSendToDataBase = (req, res) => {};
+
 //Display all food from DB
 // let displayFoodToUser = displayAllFood()
 //   .then((res) => console.log(res))
 //   .catch((err) => console.log(err));
 
-module.exports = { getHomePage, getFoodData, pushToDataBase };
+module.exports = {
+  getHomePage,
+  getFoodData,
+  pushToDataBase,
+  postSendToDataBase,
+};
