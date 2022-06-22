@@ -1,6 +1,6 @@
 const { read } = require("fs");
 const path = require("path");
-
+let connectedUser;
 const {
   checkIfExist,
   pushDataToDatabase,
@@ -52,6 +52,7 @@ const postLogin = async (req, res) => {
       console.log(verifyPassword);
       if (verifyPassword) {
         res.status(200);
+        connectedUser = username;
       } else {
         res.status(403);
       }
@@ -68,9 +69,13 @@ const getLogin = (req, res) => {
   res.sendFile(path.resolve(__dirname + "/../../public/login/login.html"));
 };
 
+const getConnectedUser = () => {
+  return connectedUser;
+};
 module.exports = {
   postLogin,
   getLogin,
   PostRegister,
   GetRegister,
+  getConnectedUser,
 };
