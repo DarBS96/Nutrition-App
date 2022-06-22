@@ -2,7 +2,6 @@ const { read } = require("fs");
 const path = require("path");
 let connectedUser;
 let userId;
-
 const {
   checkIfExist,
   pushDataToDatabase,
@@ -60,6 +59,7 @@ const postLogin = async (req, res) => {
           "users"
         );
         res.status(200);
+        connectedUser = username;
       } else {
         res.status(403);
       }
