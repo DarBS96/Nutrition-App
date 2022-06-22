@@ -1,15 +1,4 @@
-const knex = require("knex");
-const db = knex({
-  client: "pg",
-  connection: {
-    host: "127.0.0.1",
-    port: "5432",
-    user: "postgres",
-    password: "Or2022",
-    database: "nutritionApp",
-  },
-});
-
+const db = require("./connection");
 const checkIfExist = (keyValueObj, table) => {
   try {
     const isExist = db(table)
@@ -44,7 +33,6 @@ const verifyUserPassword = (keyValueObj) => {
 const getProperty = (property, where, table) => {
   return db(table).select(property).where(where);
 };
-
 
 const displayAllFood = () => {
   return db("foods").select("*");

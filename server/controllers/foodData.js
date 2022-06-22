@@ -7,6 +7,7 @@ const {
   getProperty,
   displayAllFood,
 } = require("../../database/usersAuth");
+let dataFromUser;
 
 const getHomePage = (req, res) => {
   if (!getConnectedUser()) {
@@ -16,11 +17,6 @@ const getHomePage = (req, res) => {
   }
   res.render("../views/homepage.ejs", { data: null });
 };
-
-let displayFoodToUser = displayAllFood()
-  .then((res) => console.log(res))
-  .catch((err) => console.log(err));
-console.log(displayAllFood);
 
 const getFoodData = async (req, res) => {
   const { searchFood, grams } = req.body;
@@ -37,42 +33,47 @@ const getFoodData = async (req, res) => {
       "x-remote-user-id": "0",
     },
   });
+  dataFromUser = data;
 
-  res.render("../views/homepage.ejs", { data: data.foods[0] });
-
-  //Verify current user
-  const user_id = getProperty(
-    "user_id",
-    { username: getConnectedUser() },
-    "users"
-  );
-
-  //Push to DB
-  const {
-    food_name,
-    nf_calories,
-    serving_weight_grams,
-    nf_total_carbohydrate,
-    nf_protein,
-  } = data.foods[0];
-
-  pushDataToDatabase(
-    {
-      user_id,
-      food_name,
-      nf_calories,
-      nf_protein: parseInt(nf_protein),
-      serving_weight_grams,
-      nf_total_carbohydrate: parseInt(nf_total_carbohydrate),
-    },
-    "foods"
-  );
-
-  // res.json(data.foods[0]);
-  // createImage().then((img) => {
-  //   console.log(res);
-  //   res.render("../views/homepage.ejs", { img });
-  // });
+  //Render to user
+  res.render("../views/homepage.ejs", {
+    data: data.foods[0],
+  });
 };
 
-module.exports = { getHomePage, getFoodData };
+const pushToDataBase = (dataFromUser) => {
+  if (dataFromUser) {
+    //Verify current user
+    const user_id = getProperty(
+      "user_id",
+      { username: getConnectedUser() },
+      "users"
+    );
+
+    const {
+      food_name,
+      nf_calories,
+      serving_weight_grams,
+      nf_total_carbohydrate,
+      nf_protein,
+    } = dataFromUser.foods[0];
+    pushDataToDatabase(
+      {
+        user_id,
+        food_name,
+        nf_calories,
+        nf_protein: parseInt(nf_protein),
+        serving_weight_grams,
+        nf_total_carbohydrate: parseInt(nf_total_carbohydrate),
+      },
+      "foods"
+    );
+  }
+};
+
+//Display all food from DB
+let displayFoodToUser = displayAllFood()
+  .then((res) => console.log(res))
+  .catch((err) => console.log(err));
+
+module.exports = { getHomePage, getFoodData, pushToDataBase };

@@ -14,56 +14,60 @@
 </head>
 
 <body>
-<%- include("./partials/navbar.ejs"); %>
-    <div class="container d-flex flex-column align-items-center justify-content-center">
-        <h1 class="display-4 text-center mt-3">
-            Get nutrition data of each food
-        </h1>
-        <form action="/homepage" method="post" class="login-form d-grid container" style="width: 350px">
-            <div class="mb-3">
-                <label for="searchFood " class="form-label">Write any food</label>
-                <input type="text" name="searchFood" class="form-control" id="searchFood " placeholder="Apple " />
-            </div>
-            <div class="mb-3">
-                <label for="grams" class="form-label">Amount in grams</label>
-                <input type="number" name="grams" class="form-control" id="grams " placeholder="100" />
-            </div>
-            <button class="btn btn-success d-block m-auto">Calculate</button>
-        </form>
-        <br />
-        <section>
-            <% if (data) { %>
-                <div class="card" style="width: 18rem">
-                    <img src="<%=data.photo.thumb %>" style="height: 160px" class="card-img-top" alt="..." />
-                    <div class="card-body">
-                        <h5 class="card-title">
-                            <%=data?.food_name %>
-                        </h5>
-                        <p class="card-text">Information</p>
-                    </div>
-                    <ul class="list-group list-group-flush">
-                        <li class="list-group-item">
-                            grams:
-                            <%=data.serving_weight_grams %>
-                        </li>
-                        <li class="list-group-item">
-                            Calories:
-                            <%=data.nf_calories%> grams
-                        </li>
-                        <li class="list-group-item">
-                            sugars:
-                            <%=data.nf_total_carbohydrate%> grams
-                        </li>
-                        <li class="list-group-item">protein:
-                            <%=data.nf_protein%> grams</li>
-                    </ul>
+    <%- include("./partials/navbar.ejs"); %>
+        <div class="container d-flex flex-column align-items-center justify-content-center">
+            <h1 class="display-4 text-center mt-3">
+                Get nutrition data of each food
+            </h1>
+            <form action="/homepage" method="post" class="login-form d-grid container" style="width: 350px">
+                <div class="mb-3">
+                    <label for="searchFood " class="form-label">Write any food</label>
+                    <input type="text" name="searchFood" class="form-control" id="searchFood " placeholder="Apple " />
                 </div>
-                <% } %>
-        </section>
-        <div style="cursor: pointer" class="saveIcon">
-            <i class="fa-solid fa-heart"></i>
+                <div class="mb-3">
+                    <label for="grams" class="form-label">Amount in grams</label>
+                    <input type="number" name="grams" class="form-control" id="grams " placeholder="100" />
+                </div>
+                <button class="btn btn-success d-block m-auto">Calculate</button>
+            </form>
+            <br />
+            <section>
+                <% if (data) { %>
+                    <div class="card" style="width: 18rem">
+                        <img src="<%=data.photo.thumb %>" style="height: 160px" class="card-img-top" alt="..." />
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                <%=data?.food_name %>
+                            </h5>
+                            <p class="card-text">Information</p>
+                        </div>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item">
+                                grams:
+                                <%=data.serving_weight_grams %>
+                            </li>
+                            <li class="list-group-item">
+                                Calories:
+                                <%=data.nf_calories%> grams
+                            </li>
+                            <li class="list-group-item">
+                                sugars:
+                                <%=data.nf_total_carbohydrate%> grams
+                            </li>
+                            <li class="list-group-item">protein:
+                                <%=data.nf_protein%> grams</li>
+                        </ul>
+                    </div>
+                    <% } %>
+            </section>
+            <div style="cursor: pointer" class="saveIcon">
+                <i class="fa-solid fa-heart icon"></i>
+            </div>
         </div>
-    </div>
+        <script>
+            const icon = document.querySelector(".icon");
+            icon.addEventListener("click", () => (location.href = "/homepage/data"));
+        </script>
 </body>
 
 </html>
