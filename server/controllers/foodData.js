@@ -2,7 +2,6 @@ const { read } = require("fs");
 const path = require("path");
 const axios = require("axios").default;
 const { getConnectedUser } = require("./users");
-// const { createImage } = require("./chart.js");
 const {
   pushDataToDatabase,
   getProperty,
@@ -10,6 +9,11 @@ const {
 } = require("../../database/usersAuth");
 
 const getHomePage = (req, res) => {
+  if (!getConnectedUser()) {
+    res.status(405);
+    res.redirect("/users/login");
+    return;
+  }
   res.render("../views/homepage.ejs", { data: null });
 };
 

@@ -1,10 +1,12 @@
 const { read } = require("fs");
 const path = require("path");
 let connectedUser;
+let userId;
 const {
   checkIfExist,
   pushDataToDatabase,
   verifyUserPassword,
+  getProperty,
 } = require("../../database/usersAuth");
 
 const PostRegister = async (req, res) => {
@@ -49,8 +51,13 @@ const postLogin = async (req, res) => {
     const isExist = await checkIfExist({ username }, "users");
     if (isExist) {
       const verifyPassword = await verifyUserPassword(req.body);
-      console.log(verifyPassword);
       if (verifyPassword) {
+        connectedUser = username;
+        userId = await getProperty(
+          "user_id",
+          { username: connectedUser },
+          "users"
+        );
         res.status(200);
         connectedUser = username;
       } else {
@@ -69,13 +76,21 @@ const getLogin = (req, res) => {
   res.sendFile(path.resolve(__dirname + "/../../public/login/login.html"));
 };
 
-const getConnectedUser = () => {
-  return connectedUser;
+const getLogout = (req, res) => {
+  connectedUser = undefined;
+  res.redirect("/users/login");
 };
+
 module.exports = {
   postLogin,
   getLogin,
   PostRegister,
   GetRegister,
-  getConnectedUser,
+  getConnectedUser() {
+    return connectedUser;
+  },
+  getUserId() {
+    return userId?.[0]?.user_id;
+  },
+  getLogout,
 };
