@@ -1,13 +1,12 @@
 const { read } = require("fs");
 const path = require("path");
 const axios = require("axios").default;
-const { getConnectedUser } = require("./users");
+const { getConnectedUser, getUserId } = require("./users");
 const {
   pushDataToDatabase,
   getProperty,
-  displayAllFood,
+  deleteFromHistory,
 } = require("../../database/usersAuth");
-let dataFromUser;
 
 const searches = [];
 
@@ -45,46 +44,52 @@ const getFoodData = async (req, res) => {
   });
 };
 
-const pushToDataBase = (dataFromUser) => {
-  if (dataFromUser) {
-    //Verify current user
-    const user_id = getProperty(
-      "user_id",
-      { username: getConnectedUser() },
-      "users"
-    );
-
+const pushToDataBase = (req, res) => {
+  searches.forEach((item) => {
     const {
       food_name,
       nf_calories,
       serving_weight_grams,
       nf_total_carbohydrate,
       nf_protein,
-    } = dataFromUser.foods[0];
+    } = item;
     pushDataToDatabase(
       {
-        user_id,
+        user_id: getUserId(),
         food_name,
         nf_calories,
         nf_protein: parseInt(nf_protein),
         serving_weight_grams,
         nf_total_carbohydrate: parseInt(nf_total_carbohydrate),
+        photo_thumb: item.photo.thumb,
       },
       "foods"
     );
-  }
+  });
 };
 
-const postSendToDataBase = (req, res) => {};
+const getHistory = async (req, res) => {
+  // /Display all food from DB
+  if (!getUserId()) return res.redirect("/users/login");
+  const displayAllFoodFromDB = await getProperty(
+    "*",
+    { user_id: getUserId() },
+    "foods"
+  );
+  res.render("../views/history.ejs", { displayAllFoodFromDB });
+};
 
-//Display all food from DB
-// let displayFoodToUser = displayAllFood()
-//   .then((res) => console.log(res))
-//   .catch((err) => console.log(err));
+const deleteHistory = (req, res) => {
+  console.log(getUserId());
+  deleteFromHistory({ user_id: getUserId() }, "foods").then((res) =>
+    console.log(res)
+  );
+};
 
 module.exports = {
   getHomePage,
   getFoodData,
   pushToDataBase,
-  postSendToDataBase,
+  getHistory,
+  deleteHistory,
 };
