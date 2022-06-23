@@ -18,31 +18,32 @@ const getHomePage = (req, res) => {
 };
 
 const getFoodData = async (req, res) => {
-  const { searchFood, grams } = req.body;
-  const { data, status } = await axios({
-    method: "post",
-    url: "https://trackapi.nutritionix.com/v2/natural/nutrients",
-    data: {
-      query: `${searchFood} ${grams} grams`,
-    },
-    headers: {
-      "Content-Type": "application/json",
-      "x-app-id": "a107cf34",
-      "x-app-key": "32d7bcf14e2ddab57b25974ee868d5a1",
-      "x-remote-user-id": "0",
-    },
-  });
+  try {
+    const { searchFood, grams } = req.body;
+    const { data, status } = await axios({
+      method: "post",
+      url: "https://trackapi.nutritionix.com/v2/natural/nutrients",
+      data: {
+        query: `${searchFood} ${grams} grams`,
+      },
+      headers: {
+        "Content-Type": "application/json",
+        "x-app-id": "a107cf34",
+        "x-app-key": "32d7bcf14e2ddab57b25974ee868d5a1",
+        "x-remote-user-id": "0",
+      },
+    });
 
-  console.log(data.data);
-  //Render to user
-  // if (status !== 200);
+    //make an array of results anf show it to user
+    getSearches().push(data.foods[0]);
 
-  //make an array of results anf show it to user
-  getSearches().push(data.foods[0]);
-
-  res.render("../views/homepage.ejs", {
-    searches: getSearches(),
-  });
+    res.render("../views/homepage.ejs", {
+      searches: getSearches(),
+    });
+  } catch (err) {
+    res.send(err.message);
+    return;
+  }
 };
 
 const pushToDataBase = (req, res) => {
