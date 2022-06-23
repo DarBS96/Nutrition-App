@@ -15,8 +15,10 @@
 <body>
     <main class="container">
         <%- include("./partials/navbar.ejs"); %>
-            <h1 class="deleteAll display-4 text-center mt-3">Your data history</h1>
-            <button class="btn btn-danger d-block m-auto">Delete All</button>
+            <h1 class="display-4 text-center mt-3">Your data history</h1>
+            <button class="deleteAll btn btn-danger d-block m-auto">
+        Delete All
+      </button>
             <section>
                 <div class="cards-container d-flex flex-wrap">
                     <% displayAllFoodFromDB?.forEach(data => { %>
@@ -55,15 +57,20 @@
         const btnDeleteAll = document.querySelector(".deleteAll");
         btnDeleteAll.addEventListener("click", () => {
             console.log("clicked");
-            const res = fetch("/homepage/delete", {
-                method: "post",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                    msg: "DATA",
-                }),
-            });
+            (async() => {
+                const res = fetch("/homepage/delete", {
+                    method: "post",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        msg: "DATA",
+                    }),
+                });
+            })();
+            setTimeout(() => {
+                location.reload();
+            }, 100);
         });
     </script>
 </body>
