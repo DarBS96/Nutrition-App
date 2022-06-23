@@ -30,7 +30,7 @@
 
   <body>
     <div class="container">
-      <%- include("./partials/navbar.ejs"); %>
+      <%- include("./partials/navbar.ejs",{connectedUser}); %>
       <h1 class="display-4 text-center mt-3">
         Get nutrition data of each food
       </h1>
@@ -112,7 +112,7 @@
       <section>
         <div class="cards-container d-flex flex-wrap">
           <% searches.forEach(data => { %>
-          <div class="card m-auto mb-2" style="width: 18rem">
+          <div class="card m-auto mb-2 mb-4" style="width: 18rem">
             <img
               src="<%=data.photo.thumb %>"
               style="height: 160px"

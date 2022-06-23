@@ -12,7 +12,10 @@ const getRmr = async (req, res) => {
     return;
   }
   if (!(await checkIfExist({ user_id: getUserId() }, "userInfo"))) {
-    res.render("../views/rmr.ejs", { form: true });
+    res.render("../views/rmr.ejs", {
+      form: true,
+      connectedUser: getConnectedUser(),
+    });
     return;
   }
   const rmr = (
@@ -21,7 +24,12 @@ const getRmr = async (req, res) => {
   const bmi = (
     await getProperty("BMI", { user_id: getUserId() }, "userInfo")
   )[0].BMI;
-  res.render("../views/rmr.ejs", { rmr, bmi, form: false });
+  res.render("../views/rmr.ejs", {
+    rmr,
+    bmi,
+    form: false,
+    connectedUser: getConnectedUser(),
+  });
 };
 
 const postRmr = async (req, res) => {
