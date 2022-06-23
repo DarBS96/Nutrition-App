@@ -2,6 +2,8 @@ const { read } = require("fs");
 const path = require("path");
 let connectedUser;
 let userId;
+let searches = [];
+
 const {
   checkIfExist,
   pushDataToDatabase,
@@ -78,7 +80,12 @@ const getLogin = (req, res) => {
 
 const getLogout = (req, res) => {
   connectedUser = undefined;
+  searches = [];
   res.redirect("/users/login");
+};
+
+let getSearches = () => {
+  return searches;
 };
 
 module.exports = {
@@ -93,4 +100,5 @@ module.exports = {
     return userId?.[0]?.user_id;
   },
   getLogout,
+  getSearches,
 };

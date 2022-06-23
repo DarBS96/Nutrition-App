@@ -12,7 +12,6 @@ const checkIfExist = (keyValueObj, table) => {
 };
 
 const pushDataToDatabase = (keyValueObj, table) => {
-  console.log(keyValueObj);
   db(table)
     .returning("*")
     .insert([keyValueObj])
@@ -34,8 +33,8 @@ const getProperty = (property, where, table) => {
   return db(table).select(property).where(where);
 };
 
-const displayAllFood = () => {
-  return db("foods").select("*");
+const deleteFromHistory = (where, table) => {
+  return db(table).where(where).del().returning("*");
 };
 
 module.exports = {
@@ -43,5 +42,5 @@ module.exports = {
   verifyUserPassword,
   pushDataToDatabase,
   getProperty,
-  displayAllFood,
+  deleteFromHistory,
 };
