@@ -55,6 +55,6 @@ form.addEventListener("submit", async (e) => {
     form.classList.add("d-none");
     setTimeout(() => {
       location.href = "/users/login";
-    }, 5000);
+    }, 3000);
   }
 });

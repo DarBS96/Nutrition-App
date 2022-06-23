@@ -14,7 +14,11 @@ const getHomePage = (req, res) => {
     res.redirect("/users/login");
     return;
   }
-  res.render("../views/homepage.ejs", { data: null, searches: getSearches() });
+  res.render("../views/homepage.ejs", {
+    data: null,
+    searches: getSearches(),
+    connectedUser: getConnectedUser(),
+  });
 };
 
 const getFoodData = async (req, res) => {
@@ -39,6 +43,7 @@ const getFoodData = async (req, res) => {
 
     res.render("../views/homepage.ejs", {
       searches: getSearches(),
+      connectedUser: getConnectedUser(),
     });
   } catch (err) {
     res.send(err.message);
@@ -78,7 +83,10 @@ const getHistory = async (req, res) => {
     { user_id: getUserId() },
     "foods"
   );
-  res.render("../views/history.ejs", { displayAllFoodFromDB });
+  res.render("../views/history.ejs", {
+    displayAllFoodFromDB,
+    connectedUser: getConnectedUser(),
+  });
 };
 
 const deleteHistory = (req, res) => {

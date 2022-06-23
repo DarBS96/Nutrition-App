@@ -23,7 +23,7 @@
 
   <body>
     <div class="container">
-      <%- include("./partials/navbar.ejs"); %>
+      <%- include("./partials/navbar.ejs",{connectedUser}); %>
       <section>
         <h1 class="display-5 text-center mt-3">Your Data</h1>
         <% if(form) { %>
