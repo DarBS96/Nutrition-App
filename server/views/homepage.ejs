@@ -91,9 +91,9 @@
     </div>
     <script>
         const btnSave = document.querySelector(".btnSave");
-        // var myModal = new bootstrap.Modal(document.getElementById("myModal"));
+        var myModal = new bootstrap.Modal(document.getElementById("myModal"));
         btnSave.addEventListener("click", () => {
-            // myModal.show();
+            myModal.show();
             (async() => {
                 const res = fetch("/homepage/data", {
                     method: "post",
