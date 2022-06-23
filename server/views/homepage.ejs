@@ -97,12 +97,6 @@
             (async() => {
                 const res = fetch("/homepage/data", {
                     method: "post",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify({
-                        msg: "DATA",
-                    }),
                 });
             })();
         });

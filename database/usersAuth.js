@@ -12,11 +12,7 @@ const checkIfExist = (keyValueObj, table) => {
 };
 
 const pushDataToDatabase = (keyValueObj, table) => {
-  console.log(keyValueObj);
-  db(table)
-    .returning("*")
-    .insert([keyValueObj])
-    .then((res) => console.log(res));
+  db(table).returning("*").insert([keyValueObj]);
 };
 
 const verifyUserPassword = (keyValueObj) => {

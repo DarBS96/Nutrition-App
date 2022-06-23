@@ -1,14 +1,12 @@
 const { read } = require("fs");
 const path = require("path");
 const axios = require("axios").default;
-const { getConnectedUser, getUserId } = require("./users");
+const { getConnectedUser, getUserId, getSearches } = require("./users");
 const {
   pushDataToDatabase,
   getProperty,
   deleteFromHistory,
 } = require("../../database/usersAuth");
-
-const searches = [];
 
 const getHomePage = (req, res) => {
   if (!getConnectedUser()) {
@@ -16,12 +14,12 @@ const getHomePage = (req, res) => {
     res.redirect("/users/login");
     return;
   }
-  res.render("../views/homepage.ejs", { data: null, searches });
+  res.render("../views/homepage.ejs", { data: null, searches: getSearches() });
 };
 
 const getFoodData = async (req, res) => {
   const { searchFood, grams } = req.body;
-  const { data } = await axios({
+  const { data, status } = await axios({
     method: "post",
     url: "https://trackapi.nutritionix.com/v2/natural/nutrients",
     data: {
@@ -35,17 +33,20 @@ const getFoodData = async (req, res) => {
     },
   });
 
-  searches.push(data.foods[0]);
-
+  console.log(data.data);
   //Render to user
+  // if (status !== 200);
+
+  //make an array of results anf show it to user
+  getSearches().push(data.foods[0]);
+
   res.render("../views/homepage.ejs", {
-    // data: data.foods[0],
-    searches,
+    searches: getSearches(),
   });
 };
 
 const pushToDataBase = (req, res) => {
-  searches.forEach((item) => {
+  getSearches().forEach((item) => {
     const {
       food_name,
       nf_calories,
@@ -57,9 +58,9 @@ const pushToDataBase = (req, res) => {
       {
         user_id: getUserId(),
         food_name,
-        nf_calories,
+        nf_calories: parseInt(nf_calories),
         nf_protein: parseInt(nf_protein),
-        serving_weight_grams,
+        serving_weight_grams: parseInt(serving_weight_grams),
         nf_total_carbohydrate: parseInt(nf_total_carbohydrate),
         photo_thumb: item.photo.thumb,
       },
@@ -80,10 +81,7 @@ const getHistory = async (req, res) => {
 };
 
 const deleteHistory = (req, res) => {
-  console.log(getUserId());
-  deleteFromHistory({ user_id: getUserId() }, "foods").then((res) =>
-    console.log(res)
-  );
+  deleteFromHistory({ user_id: getUserId() }, "foods").then(res);
 };
 
 module.exports = {

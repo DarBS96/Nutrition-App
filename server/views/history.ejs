@@ -16,7 +16,7 @@
     <main class="container">
         <%- include("./partials/navbar.ejs"); %>
             <h1 class="display-4 text-center mt-3">Your data history</h1>
-            <button class="deleteAll btn btn-danger d-block m-auto">
+            <button class="deleteAll btn btn-danger d-block m-auto mb-4">
         Delete All
       </button>
             <section>
@@ -60,12 +60,6 @@
             (async() => {
                 const res = fetch("/homepage/delete", {
                     method: "post",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify({
-                        msg: "DATA",
-                    }),
                 });
             })();
             setTimeout(() => {
