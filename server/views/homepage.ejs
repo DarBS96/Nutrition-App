@@ -56,7 +56,7 @@
                 <div class="cards-container d-flex flex-wrap">
                     <% searches.forEach(data => { %>
                         <div class="card m-auto mb-2" style="width: 18rem">
-                            <img src="<%=data.photo.thumb %>" style="height: 160px" class="card-img-top" alt="..." />
+                            <img src="<%=data.photo.thumb %>" style="height: 220px" class="card-img-top p-3" alt="..." />
                             <div class="card-body">
                                 <h5 class="card-title">
                                     <%= data?.food_name.at(0).toUpperCase() +
@@ -82,7 +82,7 @@
                                 </li>
                                 </button>
                             </ul>
-                            <div data-bs-toggle="modal" data-bs-target="#exampleModal" class="btnSave ">
+                            <div data-bs-toggle="modal" data-bs-target="#myModal" class="btnSave ">
                                 <i class=" text-success fa-solid fa-floppy-disk"></i>
                             </div>
                         </div>

@@ -99,7 +99,6 @@ const deleteClickedCard = async (req, res) => {
     { user_id: getUserId() },
     "foods"
   );
-  console.log(displayAllFoodFromDB[idx]);
 
   deleteFromHistory(
     { food_id: displayAllFoodFromDB[idx].food_id },

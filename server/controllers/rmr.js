@@ -1,4 +1,4 @@
-const { calculateRmr, getChart, getBMI } = require("../modules/rmr.js");
+const { calculateRmr, getBMI } = require("../modules/rmr.js");
 const {
   pushDataToDatabase,
   getProperty,
@@ -43,7 +43,12 @@ const postRmr = async (req, res) => {
       BMI: Number(bmi),
     };
     pushDataToDatabase(userInfo, "userInfo");
-    res.render("../views/rmr.ejs", { rmr, bmi, form: false });
+    res.render("../views/rmr.ejs", {
+      rmr,
+      bmi,
+      form: false,
+      connectedUser: getConnectedUser(),
+    });
     return;
   }
 };
