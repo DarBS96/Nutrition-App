@@ -48,6 +48,7 @@ const GetRegister = (req, res) => {
 };
 
 const postLogin = async (req, res) => {
+  console.log(connectedUser);
   try {
     const { username, password } = req.body;
     const isExist = await checkIfExist({ username }, "users");

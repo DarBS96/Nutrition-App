@@ -1,4 +1,3 @@
-const { read } = require("fs");
 const path = require("path");
 const axios = require("axios").default;
 const { getConnectedUser, getUserId, getSearches } = require("./users");
@@ -24,7 +23,7 @@ const getHomePage = (req, res) => {
 const getFoodData = async (req, res) => {
   try {
     const { searchFood, grams } = req.body;
-    const { data, status } = await axios({
+    const { data } = await axios({
       method: "post",
       url: "https://trackapi.nutritionix.com/v2/natural/nutrients",
       data: {
@@ -38,7 +37,7 @@ const getFoodData = async (req, res) => {
       },
     });
 
-    //make an array of results anf show it to user
+    //make an array of results and show it to user
     getSearches().push(data.foods[0]);
 
     res.render("../views/homepage.ejs", {
@@ -52,27 +51,27 @@ const getFoodData = async (req, res) => {
 };
 
 const pushToDataBase = (req, res) => {
-  getSearches().forEach((item) => {
-    const {
+  const { idx } = req.body;
+  //Push card when clicked to DB
+  const {
+    food_name,
+    nf_calories,
+    serving_weight_grams,
+    nf_total_carbohydrate,
+    nf_protein,
+  } = getSearches()[idx];
+  pushDataToDatabase(
+    {
+      user_id: getUserId(),
       food_name,
-      nf_calories,
-      serving_weight_grams,
-      nf_total_carbohydrate,
-      nf_protein,
-    } = item;
-    pushDataToDatabase(
-      {
-        user_id: getUserId(),
-        food_name,
-        nf_calories: parseInt(nf_calories),
-        nf_protein: parseInt(nf_protein),
-        serving_weight_grams: parseInt(serving_weight_grams),
-        nf_total_carbohydrate: parseInt(nf_total_carbohydrate),
-        photo_thumb: item.photo.thumb,
-      },
-      "foods"
-    );
-  });
+      nf_calories: parseInt(nf_calories),
+      nf_protein: parseInt(nf_protein),
+      serving_weight_grams: parseInt(serving_weight_grams),
+      nf_total_carbohydrate: parseInt(nf_total_carbohydrate),
+      photo_thumb: getSearches()[idx].photo.thumb,
+    },
+    "foods"
+  );
 };
 
 const getHistory = async (req, res) => {
@@ -89,8 +88,23 @@ const getHistory = async (req, res) => {
   });
 };
 
-const deleteHistory = (req, res) => {
+const deleteAllHistory = (req, res) => {
   deleteFromHistory({ user_id: getUserId() }, "foods").then(res);
+};
+
+const deleteClickedCard = async (req, res) => {
+  const { idx } = req.body;
+  const displayAllFoodFromDB = await getProperty(
+    "*",
+    { user_id: getUserId() },
+    "foods"
+  );
+  console.log(displayAllFoodFromDB[idx]);
+
+  deleteFromHistory(
+    { food_id: displayAllFoodFromDB[idx].food_id },
+    "foods"
+  ).then(res);
 };
 
 module.exports = {
@@ -98,5 +112,6 @@ module.exports = {
   getFoodData,
   pushToDataBase,
   getHistory,
-  deleteHistory,
+  deleteAllHistory,
+  deleteClickedCard,
 };
