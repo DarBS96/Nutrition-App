@@ -2,11 +2,14 @@
 const btnSaveArr = document.querySelectorAll(".btnSave");
 
 btnSaveArr.forEach((icon, idx) => {
+  // const saveIcon = icon.document.querySelector(".fa-solid");
   icon?.addEventListener("click", () => {
     const myModal = new bootstrap.Modal(document.getElementById("myModal"));
     console.log("clicked");
     myModal.show();
-
+    console.log(icon.firstElementChild);
+    icon.firstElementChild.classList.remove("text-success");
+    icon.firstElementChild.classList.add("text-warning");
     (async () => {
       try {
         const res = fetch("/homepage/data", {
