@@ -1,5 +1,6 @@
 const { read } = require("fs");
 const path = require("path");
+const bcrypt = require("bcrypt");
 let connectedUser;
 let userId;
 let searches = [];
@@ -13,6 +14,8 @@ const {
 
 const PostRegister = async (req, res) => {
   const { username, email, password, firstName, lastName } = req.body;
+  const salt = bcrypt.genSaltSync();
+  const hash = bcrypt.hashSync(password, salt);
   const usernameExist = await checkIfExist({ ["username"]: username }, "users");
   const emailExist = await checkIfExist({ ["email"]: email }, "users");
   if (usernameExist) {
@@ -29,7 +32,7 @@ const PostRegister = async (req, res) => {
     pushDataToDatabase(
       {
         username,
-        password,
+        password: hash,
         email,
         first_name: firstName,
         last_name: lastName,
@@ -53,7 +56,16 @@ const postLogin = async (req, res) => {
     const { username, password } = req.body;
     const isExist = await checkIfExist({ username }, "users");
     if (isExist) {
-      const verifyPassword = await verifyUserPassword(req.body);
+      // const verifyPassword = await verifyUserPassword(req.body);
+      const hashPassword = await getProperty(
+        "password",
+        { username: username },
+        "users"
+      );
+      const verifyPassword = bcrypt.compareSync(
+        password,
+        hashPassword[0].password
+      );
       if (verifyPassword) {
         connectedUser = username;
         userId = await getProperty(
