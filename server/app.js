@@ -15,13 +15,13 @@ app.use(cookieParser());
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "/views"));
 
-app.use("/", (req, res) => {
-  res.redirect("/homepage");
-});
 app.use("/users", router);
 app.use("/homepage", routerHomePage);
 app.use("/rmr", routerRmr);
 app.get("/logout", verify, getLogout);
+app.use("/", (req, res) => {
+  res.redirect("/homepage");
+});
 
 app.listen(process.env.PORT, () =>
   console.log(`server running on port ${process.env.PORT}`)
