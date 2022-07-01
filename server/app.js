@@ -15,6 +15,9 @@ app.use(cookieParser());
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "/views"));
 
+app.use("/", (req, res) => {
+  res.redirect("/");
+});
 app.use("/users", router);
 app.use("/homepage", routerHomePage);
 app.use("/rmr", routerRmr);
