@@ -76,16 +76,14 @@ const postLogin = async (req, res) => {
         res.cookie("data", JSON.stringify(userObj));
         res.status(200).send();
       } else {
-        console.log("403");
         res.status(403).send();
       }
     } else {
-      console.log("406");
       res.status(406).send();
     }
     // res.json({ username, password });
   } catch (err) {
-    console.log(err);
+    console.log("ERROR POST LOGIN", err);
   }
 };
 
@@ -100,7 +98,6 @@ const getLogout = (req, res) => {
     ),
     1
   );
-  searches.splice(req.connectedUserId, 1);
   res.redirect("/users/login");
 };
 

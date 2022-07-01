@@ -14,27 +14,19 @@ const verify = (req, res, next) => {
   try {
     if (req.cookies.data) {
       const userObj = JSON.parse(req.cookies.data);
-      req.connectedUser = getConnectedUsers().find(
+      const username = getConnectedUsers().find(
         (user) => user.token === userObj.token
-      ).username;
+      );
+      req.connectedUser = username.username;
       req.connectedUserId = getConnectedUsers().find(
         (user) => user.token === userObj.token
       ).userId;
-      console.log(
-        "username: ",
-        req.connectedUser,
-        "user_id: ",
-        req.connectedUserId
-      );
       next();
       return;
     }
-    res.send(
-      "<h1>There was an authentication problem! Please log in again!</h1>"
-    );
+    res.redirect("/users/login");
   } catch (err) {
     res.redirect("/users/login");
-    console.log(err);
   }
 };
 

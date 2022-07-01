@@ -13,7 +13,6 @@ const getHomePage = (req, res) => {
     res.redirect("/users/login");
     return;
   }
-  console.log(getSearches());
   res.render("../views/homepage.ejs", {
     data: null,
     searches: getSearches()[req.connectedUserId],
