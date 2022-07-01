@@ -16,7 +16,7 @@ app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "/views"));
 
 app.use("/", (req, res) => {
-  res.redirect("/");
+  res.redirect("/homepage");
 });
 app.use("/users", router);
 app.use("/homepage", routerHomePage);
