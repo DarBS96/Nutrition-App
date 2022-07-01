@@ -16,11 +16,12 @@ const login = async () => {
     };
 
     const res = await fetch(URL, options);
-    console.log(res.status);
     if (res.status === 406) {
+      console.log("406");
       p.classList.add("text-danger");
       p.textContent = "Sorry you have to register first";
     } else if (res.status === 403) {
+      console.log("403");
       p.classList.add("text-danger");
       p.textContent = "Sorry incorrect password";
     } else {

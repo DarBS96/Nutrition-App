@@ -4,42 +4,41 @@ const {
   getProperty,
   checkIfExist,
 } = require("../../database/usersAuth");
-const { getConnectedUser, getUserId } = require("./users");
 
 const getRmr = async (req, res) => {
-  if (!getConnectedUser()) {
+  if (!req.connectedUser) {
     res.redirect("/users/login");
     return;
   }
-  if (!(await checkIfExist({ user_id: getUserId() }, "userInfo"))) {
+  if (!(await checkIfExist({ user_id: req.connectedUserId }, "userInfo"))) {
     res.render("../views/rmr.ejs", {
       form: true,
-      connectedUser: getConnectedUser(),
+      connectedUser: req.connectedUser,
     });
     return;
   }
   const rmr = (
-    await getProperty("RMR", { user_id: getUserId() }, "userInfo")
+    await getProperty("RMR", { user_id: req.connectedUserId }, "userInfo")
   )[0].RMR;
   const bmi = (
-    await getProperty("BMI", { user_id: getUserId() }, "userInfo")
+    await getProperty("BMI", { user_id: req.connectedUserId }, "userInfo")
   )[0].BMI;
   res.render("../views/rmr.ejs", {
     rmr,
     bmi,
     form: false,
-    connectedUser: getConnectedUser(),
+    connectedUser: req.connectedUser,
   });
 };
 
 const postRmr = async (req, res) => {
-  if (!(await checkIfExist({ user_id: getUserId() }, "userInfo"))) {
+  if (!(await checkIfExist({ user_id: req.connectedUserId }, "userInfo"))) {
     const rmr = calculateRmr(req.body);
     const bmi = getBMI(req.body);
     const userInfo = {
       ...req.body,
       RMR: rmr,
-      user_id: getUserId(),
+      user_id: req.connectedUserId,
       BMI: Number(bmi),
     };
     pushDataToDatabase(userInfo, "userInfo");
@@ -47,7 +46,7 @@ const postRmr = async (req, res) => {
       rmr,
       bmi,
       form: false,
-      connectedUser: getConnectedUser(),
+      connectedUser: req.connectedUser,
     });
     return;
   }

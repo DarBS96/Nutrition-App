@@ -1,6 +1,6 @@
 const path = require("path");
 const axios = require("axios").default;
-const { getConnectedUser, getUserId, getSearches } = require("./users");
+const { getConnectedUsers, getSearches } = require("./users");
 const {
   pushDataToDatabase,
   getProperty,
@@ -8,15 +8,16 @@ const {
 } = require("../../database/usersAuth");
 
 const getHomePage = (req, res) => {
-  if (!getConnectedUser()) {
+  if (!req.connectedUser) {
     res.status(405);
     res.redirect("/users/login");
     return;
   }
+  console.log(getSearches());
   res.render("../views/homepage.ejs", {
     data: null,
-    searches: getSearches(),
-    connectedUser: getConnectedUser(),
+    searches: getSearches()[req.connectedUserId],
+    connectedUser: req.connectedUser,
   });
 };
 
@@ -38,11 +39,11 @@ const getFoodData = async (req, res) => {
     });
 
     //make an array of results and show it to user
-    getSearches().push(data.foods[0]);
+    getSearches()[req.connectedUserId].push(data.foods[0]);
 
     res.render("../views/homepage.ejs", {
-      searches: getSearches(),
-      connectedUser: getConnectedUser(),
+      searches: getSearches()[req.connectedUserId],
+      connectedUser: req.connectedUser,
     });
   } catch (err) {
     res.send(err.message);
@@ -59,16 +60,16 @@ const pushToDataBase = (req, res) => {
     serving_weight_grams,
     nf_total_carbohydrate,
     nf_protein,
-  } = getSearches()[idx];
+  } = getSearches()[req.connectedUserId][idx];
   pushDataToDatabase(
     {
-      user_id: getUserId(),
+      user_id: req.connectedUserId,
       food_name,
       nf_calories: parseInt(nf_calories),
       nf_protein: parseInt(nf_protein),
       serving_weight_grams: parseInt(serving_weight_grams),
       nf_total_carbohydrate: parseInt(nf_total_carbohydrate),
-      photo_thumb: getSearches()[idx].photo.thumb,
+      photo_thumb: getSearches()[req.connectedUserId][idx].photo.thumb,
     },
     "foods"
   );
@@ -76,27 +77,27 @@ const pushToDataBase = (req, res) => {
 
 const getHistory = async (req, res) => {
   // /Display all food from DB
-  if (!getUserId()) return res.redirect("/users/login");
+  if (!req.connectedUserId) return res.redirect("/users/login");
   const displayAllFoodFromDB = await getProperty(
     "*",
-    { user_id: getUserId() },
+    { user_id: req.connectedUserId },
     "foods"
   );
   res.render("../views/history.ejs", {
     displayAllFoodFromDB,
-    connectedUser: getConnectedUser(),
+    connectedUser: req.connectedUser,
   });
 };
 
 const deleteAllHistory = (req, res) => {
-  deleteFromHistory({ user_id: getUserId() }, "foods").then(res);
+  deleteFromHistory({ user_id: req.connectedUserId }, "foods").then(res);
 };
 
 const deleteClickedCard = async (req, res) => {
   const { idx } = req.body;
   const displayAllFoodFromDB = await getProperty(
     "*",
-    { user_id: getUserId() },
+    { user_id: req.connectedUserId },
     "foods"
   );
 

@@ -1,9 +1,8 @@
 const { read } = require("fs");
 const path = require("path");
 const bcrypt = require("bcrypt");
-let connectedUser;
-let userId;
 let searches = [];
+let connectedUsers = [];
 
 const {
   checkIfExist,
@@ -51,7 +50,6 @@ const GetRegister = (req, res) => {
 };
 
 const postLogin = async (req, res) => {
-  console.log(connectedUser);
   try {
     const { username, password } = req.body;
     const isExist = await checkIfExist({ username }, "users");
@@ -67,21 +65,25 @@ const postLogin = async (req, res) => {
         hashPassword[0].password
       );
       if (verifyPassword) {
-        connectedUser = username;
-        userId = await getProperty(
-          "user_id",
-          { username: connectedUser },
-          "users"
-        );
-        res.status(200);
-        connectedUser = username;
+        userId = await getProperty("user_id", { username }, "users");
+        const userObj = {
+          username,
+          token: Math.random(),
+          userId: userId[0].user_id,
+        };
+        connectedUsers.push(userObj);
+        searches[userId[0].user_id] = [];
+        res.cookie("data", JSON.stringify(userObj));
+        res.status(200).send();
       } else {
-        res.status(403);
+        console.log("403");
+        res.status(403).send();
       }
     } else {
-      res.status(406);
+      console.log("406");
+      res.status(406).send();
     }
-    res.json({ username, password });
+    // res.json({ username, password });
   } catch (err) {
     console.log(err);
   }
@@ -92,8 +94,13 @@ const getLogin = (req, res) => {
 };
 
 const getLogout = (req, res) => {
-  connectedUser = undefined;
-  searches = [];
+  connectedUsers.splice(
+    connectedUsers.findIndex(
+      (userObj) => userObj.userId === req.connectedUserId
+    ),
+    1
+  );
+  searches.splice(req.connectedUserId, 1);
   res.redirect("/users/login");
 };
 
@@ -106,11 +113,8 @@ module.exports = {
   getLogin,
   PostRegister,
   GetRegister,
-  getConnectedUser() {
-    return connectedUser;
-  },
-  getUserId() {
-    return userId?.[0]?.user_id;
+  getConnectedUsers() {
+    return connectedUsers;
   },
   getLogout,
   getSearches,
