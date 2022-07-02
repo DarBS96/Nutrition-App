@@ -73,7 +73,7 @@ const postLogin = async (req, res) => {
         };
         connectedUsers.push(userObj);
         searches[userId[0].user_id] = [];
-        res.cookie("data", JSON.stringify(userObj));
+        res.cookie("data", JSON.stringify(userObj), { maxAge: 1800000 });
         res.status(200).send();
       } else {
         res.status(403).send();
@@ -98,6 +98,7 @@ const getLogout = (req, res) => {
     ),
     1
   );
+  res.clearCookie("data");
   res.redirect("/users/login");
 };
 
