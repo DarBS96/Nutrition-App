@@ -31,8 +31,8 @@ const getFoodData = async (req, res) => {
       },
       headers: {
         "Content-Type": "application/json",
-        "x-app-id": "a107cf34",
-        "x-app-key": "32d7bcf14e2ddab57b25974ee868d5a1",
+        "x-app-id": process.env.NUTRITIONX_API_ID,
+        "x-app-key": process.env.NUTRITIONX_API_KEY,
         "x-remote-user-id": "0",
       },
     });
@@ -45,7 +45,11 @@ const getFoodData = async (req, res) => {
       connectedUser: req.connectedUser,
     });
   } catch (err) {
-    res.send(err.message);
+    console.error(err);
+    res.render("../views/homepage.ejs", {
+      searches: "",
+      connectedUser: req.connectedUser,
+    });
     return;
   }
 };

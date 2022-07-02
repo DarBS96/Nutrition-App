@@ -54,7 +54,8 @@
             </form>
             <br />
             <section>
-                <div class="cards-container d-flex flex-wrap">
+                <div class="cards-container d-flex flex-wrap justify-content-center">
+                    <% if(Array.isArray(searches)) { %>
                     <% searches.forEach(data => { %>
                         <div class="card m-auto mb-2" style="width: 18rem">
                             <img src="<%=data.photo.thumb %>" style="height: 220px" class="card-img-top p-3" alt="..." />
@@ -87,7 +88,10 @@
                                 <i class=" text-success fa-solid fa-floppy-disk"></i>
                             </div>
                         </div>
-                        <% }) %>
+                        <% })} else { %>
+                            <h1 class="text-center display-5">Could not find what you looked for! 🚫</h1>
+                               <h1 class="text-center display-5">Please try something different </h1>
+                                <% } %>
                 </div>
             </section>
     </div>
