@@ -73,7 +73,9 @@ const postLogin = async (req, res) => {
         };
         connectedUsers.push(userObj);
         searches[userId[0].user_id] = [];
-        res.cookie("data", JSON.stringify(userObj), { maxAge: 1800000 });
+        res.cookie("data", JSON.stringify(userObj), {
+          maxAge: Number(process.env.COOKIES_EXPIRATION_MINS) * 60 * 1000,
+        });
         res.status(200).send();
       } else {
         res.status(403).send();
