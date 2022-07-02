@@ -38,7 +38,7 @@ const getFoodData = async (req, res) => {
     });
 
     //make an array of results and show it to user
-    getSearches()[req.connectedUserId].push(data.foods[0]);
+    getSearches()[req.connectedUserId].unshift(data.foods[0]);
 
     res.render("../views/homepage.ejs", {
       searches: getSearches()[req.connectedUserId],
@@ -83,7 +83,7 @@ const getHistory = async (req, res) => {
     "foods"
   );
   res.render("../views/history.ejs", {
-    displayAllFoodFromDB,
+    displayAllFoodFromDB: displayAllFoodFromDB.reverse(),
     connectedUser: req.connectedUser,
   });
 };
