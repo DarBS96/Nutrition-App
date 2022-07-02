@@ -34,7 +34,7 @@ btnDeleteAll?.addEventListener("click", () => {
 });
 
 const btnDeleteArr = document.querySelectorAll(".trash");
-btnDeleteArr.forEach((item, idx) => {
+[...btnDeleteArr].reverse().forEach((item, idx) => {
   item.addEventListener("click", () => {
     console.log("clicked");
     (async () => {
